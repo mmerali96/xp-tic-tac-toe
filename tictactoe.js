@@ -14,7 +14,6 @@ function playerMove(gameboard, player, opponent) {
 }
 
 function lookForCenter(gameboard, player) {
-  console.log("[lookForCenter]");
   if (gameboard[1][1] === "") {
     gameboard[1][1] = player;
     return true;
@@ -22,16 +21,34 @@ function lookForCenter(gameboard, player) {
   return false;
 }
 
+/**
+ * Fill up every empty slot
+ * @param {*} gameboard
+ * @param {*} player
+ * @returns
+ */
 function lookForEmptySide(gameboard, player) {
-  console.log("[lookForEmptySide]");
+  let { i, j } = findEmptySlot(gameboard);
+  if (i !== -1 && j !== -1) {
+    gameboard[i][j] = player;
+  }
+}
+
+function doesGameboardHaveEmptySlots(gameboard) {
+  let { i, j } = findEmptySlot(gameboard);
+  console.log("Gameboard is full... its a draw");
+  return i === -1 && j === -1;
+}
+
+function findEmptySlot(gameboard) {
   for (let i = 0; i < gameboard.length; i++) {
     for (let j = 0; j < gameboard.length; j++) {
       if (gameboard[i][j] === "") {
-        gameboard[i][j] = player;
-        return true;
+        return { i, j };
       }
     }
   }
+  return { i: -1, j: -1 };
 }
 
 function lookForEmptyCorner(gameboard, player) {
@@ -116,7 +133,11 @@ function main() {
     playerMove(gameboard, "X", "O");
     playerMove(gameboard, "O", "X");
     console.table(gameboard);
-    if (checkIfWinner(gameboard, "X") || checkIfWinner(gameboard, "O")) {
+    if (
+      checkIfWinner(gameboard, "X") ||
+      checkIfWinner(gameboard, "O") ||
+      doesGameboardHaveEmptySlots(gameboard)
+    ) {
       break;
     }
   }
