@@ -1,10 +1,10 @@
 function playerMove(gameboard, player, opponent) {
   console.log(`Player ${player}'s move`);
-  if (lookForEmptyCorner(gameboard, player)) {
-    return;
-  } else if (lookForTwoInARow(gameboard, opponent, player)) {
+  if (lookForTwoInARow(gameboard, opponent, player)) {
     return;
   } else if (lookForTwoInARow(gameboard, player, player)) {
+    return;
+  } else if (lookForEmptyCorner(gameboard, player)) {
     return;
   } else if (lookForCenter(gameboard, player)) {
     return;
@@ -34,7 +34,7 @@ function lookForEmptySide(gameboard, player) {
   }
 }
 
-function doesGameboardHaveEmptySlots(gameboard) {
+function isGameboardFull(gameboard) {
   let { i, j } = findEmptySlot(gameboard);
   console.log("Gameboard is full... its a draw");
   return i === -1 && j === -1;
@@ -136,7 +136,7 @@ function main() {
     if (
       checkIfWinner(gameboard, "X") ||
       checkIfWinner(gameboard, "O") ||
-      doesGameboardHaveEmptySlots(gameboard)
+      isGameboardFull(gameboard)
     ) {
       break;
     }
